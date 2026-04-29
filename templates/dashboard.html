@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>🌿 Crop Analysis</h2>
+        <p>Upload a crop image and get instant AI diagnosis.</p>
+
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" required>
+            <br><br>
+            <button type="submit" class="btn-primary">Analyze Crop</button>
+        </form>
+
+        {% if image_path %}
+            <img src="{{ image_path }}" class="preview-img">
+        {% endif %}
+
+        {% if prediction %}
+            <div class="result-section">
+                <h3>Diagnosis Result</h3>
+                <h2 class="disease">{{ prediction }}</h2>
+                <p class="confidence">Confidence: {{ confidence }}%</p>
+
+                <p class="recommendation">
+                    🧪 {{ recommendation }}
+                </p>
+
+                <!-- ACTION BUTTONS -->
+                <div class="action-buttons">
+                    <button onclick="showTreatment()">🧪 Treatment</button>
+                    <button onclick="showShops()">🛒 Buy</button>
+                    <button onclick="showContact()">💬 Help</button>
+                </div>
+
+                <!-- HIDDEN BOXES -->
+
+                <div id="treatmentBox" class="hidden-box">
+                    <h4>Treatment Details</h4>
+                    <p>{{ recommendation }}</p>
+                </div>
+
+                <div id="shopsBox" class="hidden-box">
+                    <h4>Find Agrovet Shops</h4>
+                    <a href="https://www.google.com/maps/search/agrovet+shops+near+me" target="_blank">
+                        Open Google Maps
+                    </a>
+                </div>
+
+                <div id="contactBox" class="hidden-box">
+                    <h4>Contact Expert</h4>
+                    <a href="tel:+256700000000">📞 Call Officer</a><br>
+                    <a href="https://wa.me/256700000000" target="_blank">💬 WhatsApp</a>
+                </div>
+
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+function showTreatment() {
+    document.getElementById("treatmentBox").style.display = "block";
+}
+function showShops() {
+    document.getElementById("shopsBox").style.display = "block";
+}
+function showContact() {
+    document.getElementById("contactBox").style.display = "block";
+}
+</script>
+
+{% endblock %}

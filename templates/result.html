@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="result-container">
+    <div class="result-card">
+        <h2>🌿 Diagnosis Complete</h2>
+        
+        <div class="result-content">
+            <div class="image-preview">
+                <img src="{{ image_path }}" alt="Uploaded crop">
+            </div>
+            
+            <div class="diagnosis-result">
+                <h3>Diagnosis:</h3>
+                {% if prediction == "Healthy" %}
+                    <p class="healthy-result">✅ {{ prediction }}</p>
+                {% else %}
+                    <p class="disease-result">⚠️ {{ prediction.replace('_', ' ') }}</p>
+                {% endif %}
+                
+                <div class="confidence">
+                    <p>Confidence: <strong><span id="confidenceValue">{{ confidence|round(1) }}</span>%</strong></p>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" id="confidenceFill"></div>
+                    </div>
+                </div>
+                
+                <div class="recommendations">
+                    <h4>🧪 Treatment Recommendations</h4>
+                    <p><strong>Chemicals:</strong> 
+                        {% if recommendation.chemicals %}
+                            {{ recommendation.chemicals | join(', ') }}
+                        {% else %}
+                            No chemicals needed
+                        {% endif %}
+                    </p>
+                    <p><strong>Application:</strong> {{ recommendation.application }}</p>
+                    {% if recommendation.organic %}
+                        <p><strong>Organic Alternative:</strong> {{ recommendation.organic }}</p>
+                    {% endif %}
+                    <p><strong>Safety Tips:</strong> {{ recommendation.safety }}</p>
+                </div>
+                
+                {% if is_logged_in %}
+                    <div class="premium-actions">
+                        <a href="/shop_locator" class="btn secondary">🏪 Find Shops</a>
+                        <a href="/officers" class="btn secondary">👨‍🌾 Contact Expert</a>
+                    </div>
+                {% else %}
+                    <div class="upsell-box">
+                        <h4>🔒 Unlock Premium Features</h4>
+                        <p>Login to access:</p>
+                        <ul>
+                            <li>📍 Find nearby shops selling these chemicals</li>
+                            <li>👨‍🌾 Connect with agricultural officers for expert advice</li>
+                            <li>📊 Save your diagnosis history</li>
+                        </ul>
+                        <div class="upsell-buttons">
+                            <a href="/login" class="btn primary">Login</a>
+                            <a href="/signup" class="btn secondary">Sign Up Free</a>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="action-buttons">
+                    <a href="/dashboard" class="btn primary">🔄 New Diagnosis</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.result-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.result-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.result-card h2 {
+    color: #2e7d32;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.result-content {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.image-preview {
+    flex: 1;
+    min-width: 250px;
+}
+
+.image-preview img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.diagnosis-result {
+    flex: 2;
+}
+
+.healthy-result {
+    font-size: 28px;
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.disease-result {
+    font-size: 28px;
+    color: #f44336;
+    font-weight: bold;
+}
+
+.confidence {
+    margin: 20px 0;
+}
+
+.confidence-bar {
+    width: 100%;
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.confidence-fill {
+    height: 100%;
+    background: #4caf50;
+    border-radius: 5px;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+.recommendations {
+    background: #e8f5e9;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+}
+
+.recommendations h4 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+}
+
+.recommendations p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.premium-actions {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.upsell-box {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+    text-align: center;
+    border: 2px solid #ff9800;
+}
+
+.upsell-box h4 {
+    color: #e65100;
+    margin-bottom: 10px;
+}
+
+.upsell-box ul {
+    text-align: left;
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.upsell-box li {
+    margin: 8px 0;
+    color: #555;
+}
+
+.upsell-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 500;
+}
+
+.btn.primary {
+    background: #2e7d32;
+    color: white;
+}
+
+.btn.secondary {
+    background: #fbc02d;
+    color: black;
+}
+
+@media (max-width: 768px) {
+    .result-content {
+        flex-direction: column;
+    }
+}
+</style>
+
+<script>
+// Get confidence value from HTML element (NO Jinja2 in JavaScript)
+var confidenceSpan = document.getElementById('confidenceValue');
+var confidenceValue = confidenceSpan ? parseFloat(confidenceSpan.innerText) : 0;
+var fillBar = document.getElementById('confidenceFill');
+if (fillBar) {
+    fillBar.style.width = confidenceValue + '%';
+}
+</script>
+{% endblock %}

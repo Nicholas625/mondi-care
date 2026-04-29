@@ -1,0 +1,29 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Large files (DO NOT UPLOAD)
+*.keras
+*.whl
+*.h5
+*.pb
+
+# Uploaded images
+static/uploads/
+
+# Database (optional - keep if you want)
+# mondicare.db
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

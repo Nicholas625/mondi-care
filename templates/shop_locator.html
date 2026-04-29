@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="shop-locator">
+    <h2>🏪 Nearby Shops & Suppliers</h2>
+    <p>Find shops selling recommended pesticides for: <strong id="diseaseName">Loading...</strong></p>
+    
+    <div class="shop-controls">
+        <button class="btn secondary" onclick="showPhysicalShops()">🏬 Physical Stores</button>
+        <button class="btn secondary" onclick="showOnlineShops()">🛒 Online Stores</button>
+        <button class="btn primary" onclick="showAllShops()">📍 Show All</button>
+    </div>
+    
+    <div id="shopsList" class="shops-list">
+        <!-- Shops will be loaded here -->
+        <div class="loading">Loading shops near you...</div>
+    </div>
+    
+    <!-- Map Integration (Optional) -->
+    <div id="map" style="height: 400px; margin-top: 30px; display: none;"></div>
+</div>
+
+<style>
+.shop-locator {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.shop-controls {
+    margin: 30px 0;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.shops-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.shop-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.shop-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.shop-card h3 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.shop-type {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.physical {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.online {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.shop-details p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.shop-details i {
+    margin-right: 10px;
+}
+
+.contact-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 15px;
+    background: #2e7d32;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.contact-btn:hover {
+    background: #1b5e20;
+}
+
+.loading {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .shops-list {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+let allShops = [];
+
+// Load shops when page loads
+window.onload = function() {
+    loadShops();
+    
+    // Get disease from session storage
+    const prediction = JSON.parse(sessionStorage.getItem('lastPrediction') || '{}');
+    document.getElementById('diseaseName').textContent = prediction.disease || 'Unknown';
+};
+
+function loadShops() {
+    fetch('/get_shops')
+        .then(response => response.json())
+        .then(shops => {
+            allShops = shops;
+            displayShops(shops);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('shopsList').innerHTML = 
+                '<div class="loading">Error loading shops. Please try again.</div>';
+        });
+}
+
+function displayShops(shops) {
+    if (shops.length === 0) {
+        document.getElementById('shopsList').innerHTML = 
+            '<div class="loading">No shops found for your location. Try searching online.</div>';
+        return;
+    }
+    
+    const shopsHtml = shops.map(shop => `
+        <div class="shop-card">
+            <h3>${shop.name}</h3>
+            <span class="shop-type ${shop.type}">${shop.type === 'physical' ? '🏬 Physical Store' : '🛒 Online Store'}</span>
+            <div class="shop-details">
+                ${shop.type === 'physical' ? `
+                    <p><i>📍</i> ${shop.address}</p>
+                    <p><i>📏</i> ${shop.distance}</p>
+                    <p><i>📞</i> ${shop.phone}</p>
+                    <p><i>🧪</i> Products: ${shop.products.join(', ')}</p>
+                    <a href="tel:${shop.phone}" class="contact-btn">📞 Call Shop</a>
+                ` : `
+                    <p><i>🌐</i> Website: <a href="${shop.website}" target="_blank">${shop.website}</a></p>
+                    <p><i>🚚</i> ${shop.delivery}</p>
+                    <p><i>🧪</i> Products: ${shop.products.join(', ')}</p>
+                    <a href="${shop.website}" target="_blank" class="contact-btn">🛒 Visit Store</a>
+                `}
+            </div>
+        </div>
+    `).join('');
+    
+    document.getElementById('shopsList').innerHTML = shopsHtml;
+}
+
+function showPhysicalShops() {
+    const physical = allShops.filter(shop => shop.type === 'physical');
+    displayShops(physical);
+}
+
+function showOnlineShops() {
+    const online = allShops.filter(shop => shop.type === 'online');
+    displayShops(online);
+}
+
+function showAllShops() {
+    displayShops(allShops);
+}
+</script>
+
+{% endblock %}

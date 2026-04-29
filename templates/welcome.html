@@ -1,0 +1,717 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Hero Section with Overlay Animation -->
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <span class="badge-text">Smart Crop Health Detection</span>
+        </div>
+        <h1 class="hero-title">
+            <span class="gradient-text">MONDIcare</span>
+        </h1>
+        <h2 class="hero-subtitle">Protect Your Harvest with Precision</h2>
+        
+        <p class="hero-description">
+            Detect Irish potato diseases instantly using advanced technology. 
+            Upload images and get accurate diagnoses, treatment recommendations, and connect with agricultural experts.
+        </p>
+        
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">95%+</span>
+                <span class="stat-label">Accuracy Rate</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">&lt;5s</span>
+                <span class="stat-label">Detection Time</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">Availability</span>
+            </div>
+        </div>
+        
+        <div class="hero-buttons">
+            <a href="/dashboard" class="btn btn-primary btn-large">
+                <span>🚀 Get Started</span>
+                <span class="btn-icon">→</span>
+            </a>
+            <a href="/about" class="btn btn-outline btn-large">
+                <span>📖 Learn More</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section with Icons -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Why Choose MONDIcare</span>
+            <h2 class="section-title">Revolutionizing Crop Disease Detection</h2>
+            <p class="section-subtitle">Powered by cutting-edge technology designed for African farmers</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>Get crop analysis results in under 5 seconds, enabling rapid response to disease threats.</p>
+                <div class="feature-link">Learn more →</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Highly Accurate</h3>
+                <p>Trained on thousands of potato leaf images with 95%+ accuracy for Early and Late Blight detection.</p>
+                <div class="feature-link">Learn more →</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🌿</div>
+                <h3>Expert Recommendations</h3>
+                <p>Get immediate pesticide recommendations and organic alternatives for treating identified diseases.</p>
+                <div class="feature-link">Learn more →</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📍</div>
+                <h3>Shop Locator</h3>
+                <p>Find nearby agricultural shops selling recommended pesticides and treatments instantly.</p>
+                <div class="feature-link">Learn more →</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">👨‍🌾</div>
+                <h3>Expert Connection</h3>
+                <p>Connect directly with agricultural officers for professional guidance and support.</p>
+                <div class="feature-link">Learn more →</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Mobile Friendly</h3>
+                <p>Access MONDIcare from any device - smartphone, tablet, or computer, anytime anywhere.</p>
+                <div class="feature-link">Learn more →</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Simple Process</span>
+            <h2 class="section-title">How MONDIcare Works</h2>
+            <p class="section-subtitle">Three simple steps to protect your crop</p>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">01</div>
+                <div class="step-icon">📸</div>
+                <h3>Upload Photo</h3>
+                <p>Take a clear photo of the potato leaf showing symptoms and upload it to our system</p>
+            </div>
+            <div class="step-arrow">→</div>
+            
+            <div class="step">
+                <div class="step-number">02</div>
+                <div class="step-icon">🧠</div>
+                <h3>Smart Analysis</h3>
+                <p>Our deep learning model analyzes the image and detects any disease presence</p>
+            </div>
+            <div class="step-arrow">→</div>
+            
+            <div class="step">
+                <div class="step-number">03</div>
+                <div class="step-icon">🎯</div>
+                <h3>Get Results</h3>
+                <p>Receive instant diagnosis with treatment recommendations and expert contacts</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Diseases We Detect Section -->
+<section class="diseases-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Our Expertise</span>
+            <h2 class="section-title">Diseases We Detect</h2>
+            <p class="section-subtitle">Specialized in Irish potato disease identification</p>
+        </div>
+        
+        <div class="diseases-grid">
+            <div class="disease-card late-blight">
+                <div class="disease-icon">⚠️</div>
+                <h3>Late Blight</h3>
+                <p class="disease-desc">Phytophthora infestans - The most destructive potato disease causing dark lesions</p>
+                <div class="disease-stats">
+                    <span class="stat">High Severity</span>
+                    <span class="stat">Rapid Spread</span>
+                </div>
+            </div>
+            
+            <div class="disease-card early-blight">
+                <div class="disease-icon">⚠️</div>
+                <h3>Early Blight</h3>
+                <p class="disease-desc">Alternaria solani - Causes dark concentric rings on leaves in warm conditions</p>
+                <div class="disease-stats">
+                    <span class="stat">Medium Severity</span>
+                    <span class="stat">Common</span>
+                </div>
+            </div>
+            
+            <div class="disease-card healthy">
+                <div class="disease-icon">✅</div>
+                <h3>Healthy Plant</h3>
+                <p class="disease-desc">Vigorous growth with no disease symptoms detected</p>
+                <div class="disease-stats">
+                    <span class="stat">Good Health</span>
+                    <span class="stat">Preventive Care</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Protect Your Harvest?</h2>
+            <p>Join thousands of farmers using MONDIcare to detect and prevent crop diseases</p>
+            <div class="cta-buttons">
+                <a href="/dashboard" class="btn btn-primary btn-large">Start Free Diagnosis →</a>
+                <a href="/contact" class="btn btn-outline-light btn-large">Contact Support</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* ================= GLOBAL STYLES ================= */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-tag {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(46, 125, 50, 0.1);
+    color: #2e7d32;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.section-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    font-size: 18px;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ================= HERO SECTION ================= */
+.hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('/static/images/farm2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(46,125,50,0.3) 0%, rgba(27,94,32,0.4) 100%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 40px;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-badge {
+    margin-bottom: 20px;
+}
+
+.badge-text {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.hero-title {
+    font-size: 72px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 25%, #FFD700 50%, #FFA500 75%, #FFD700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    animation: shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0% {
+        background-position: -200%;
+    }
+    100% {
+        background-position: 200%;
+    }
+}
+
+.hero-subtitle {
+    font-size: 32px;
+    color: white;
+    font-weight: 600;
+    margin-bottom: 20px;
+    opacity: 0.95;
+}
+
+.hero-description {
+    font-size: 18px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 40px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 32px;
+    font-weight: 800;
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: rgba(255,255,255,0.9);
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 14px 35px;
+    border-radius: 50px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
+    color: #1a1a1a;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+    background: linear-gradient(135deg, #FFE44D 0%, #FFB347 50%, #FFE44D 100%);
+}
+
+.btn-outline {
+    background: transparent;
+    color: white;
+    border: 2px solid #FFD700;
+}
+
+.btn-outline:hover {
+    background: #FFD700;
+    color: #1a1a1a;
+    transform: translateY(-3px);
+    border-color: #FFD700;
+}
+
+.btn-outline-light {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-outline-light:hover {
+    background: white;
+    color: #2e7d32;
+}
+
+.btn-large {
+    padding: 16px 40px;
+    font-size: 18px;
+}
+
+.btn-icon {
+    font-size: 18px;
+    transition: transform 0.3s;
+}
+
+.btn-primary:hover .btn-icon {
+    transform: translateX(5px);
+}
+
+/* ================= FEATURES SECTION ================= */
+.features-section {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+    border-bottom: 3px solid #FFD700;
+}
+
+.feature-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-size: 22px;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.feature-link {
+    color: #FFA500;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.feature-link:hover {
+    color: #FFD700;
+}
+
+/* ================= HOW IT WORKS ================= */
+.how-it-works {
+    padding: 80px 0;
+    background: white;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.step {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border-radius: 20px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+}
+
+.step-number {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #1a1a1a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.step-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.step h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.step p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.step-arrow {
+    font-size: 32px;
+    color: #FFD700;
+    font-weight: bold;
+}
+
+/* ================= DISEASES SECTION ================= */
+.diseases-section {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.diseases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.disease-card {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.disease-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+}
+
+.late-blight::before {
+    background: #f44336;
+}
+
+.early-blight::before {
+    background: #ff9800;
+}
+
+.healthy::before {
+    background: #4caf50;
+}
+
+.disease-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.disease-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.disease-card h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.late-blight h3 { color: #f44336; }
+.early-blight h3 { color: #ff9800; }
+.healthy h3 { color: #4caf50; }
+
+.disease-desc {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.disease-stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.disease-stats .stat {
+    padding: 5px 12px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ================= CTA SECTION ================= */
+.cta-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    color: white;
+    text-align: center;
+}
+
+.cta-content h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.cta-content p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    opacity: 0.95;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cta-buttons .btn-primary {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #1a1a1a;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 48px;
+    }
+    
+    .hero-subtitle {
+        font-size: 24px;
+    }
+    
+    .hero-stats {
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+    
+    .stat-number {
+        font-size: 24px;
+    }
+    
+    .section-title {
+        font-size: 28px;
+    }
+    
+    .steps-container {
+        flex-direction: column;
+    }
+    
+    .step-arrow {
+        transform: rotate(90deg);
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .diseases-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+
+{% endblock %}

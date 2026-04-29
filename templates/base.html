@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MONDIcare</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <h1 class="logo">🌱 MONDIcare</h1>
+    <nav>
+        <a href="/">Home</a>
+
+        <a href="/login">Login</a> 
+    <a href="/dashboard">Predict</a>
+    <a href="/shop_locator">Shops</a>
+    <a href="/officers">Experts</a>
+    <a href="/about">About</a>
+    {% if session.user %}
+        
+        <a href="/logout">Logout</a>
+    {% else %}
+       
+    {% endif %}
+    </nav>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>© 2026 MONDIcare • Smart Farming Powered by AI</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,590 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-container">
+    
+    <!-- Hero Section -->
+    <div class="about-hero">
+        <h1>About MONDIcare</h1>
+        <p>Revolutionizing Irish Potato Farming with Artificial Intelligence</p>
+    </div>
+    
+    <!-- Mission & Vision -->
+    <div class="mission-vision">
+        <div class="mission-card">
+            <div class="mission-icon">🎯</div>
+            <h3>Our Mission</h3>
+            <p>To empower smallholder farmers with accessible AI technology for early detection and management of potato diseases, reducing crop losses and increasing food security.</p>
+        </div>
+        <div class="vision-card">
+            <div class="vision-icon">👁️</div>
+            <h3>Our Vision</h3>
+            <p>A future where every farmer has instant access to crop disease diagnosis and expert agricultural guidance at their fingertips.</p>
+        </div>
+    </div>
+    
+    <!-- The Problem We Solve -->
+    <div class="problem-section">
+        <h2>🌿 The Challenge We're Solving</h2>
+        <div class="problem-stats">
+            <div class="stat">
+                <div class="stat-number">30-50%</div>
+                <div class="stat-label">Crop Loss from Diseases</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">70%</div>
+                <div class="stat-label">Farmers Lack Access to Experts</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">48hrs</div>
+                <div class="stat-label">Critical Window for Treatment</div>
+            </div>
+        </div>
+        <p class="problem-desc">
+            Irish potato farmers in Uganda lose up to 50% of their harvest to Late Blight and Early Blight diseases. 
+            Traditional diagnosis requires expert visits that can take days, by which time the disease has spread. 
+            MONDIcare provides instant, accurate diagnosis using just a smartphone photo.
+        </p>
+    </div>
+    
+    <!-- How It Works -->
+    <div class="how-it-works">
+        <h2>⚙️ How MONDIcare Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-icon">📸</div>
+                <h4>Upload Photo</h4>
+                <p>Take a clear photo of the potato leaf showing symptoms</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-icon">🧠</div>
+                <h4>AI Analysis</h4>
+                <p>Our CNN model analyzes the image in seconds</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-icon">📊</div>
+                <h4>Get Results</h4>
+                <p>Receive diagnosis with confidence score</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-icon">🏪</div>
+                <h4>Take Action</h4>
+                <p>Get pesticide recommendations and find nearby shops</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Technology Stack -->
+    <div class="technology">
+        <h2>🔬 Technology Behind MONDIcare</h2>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <div class="tech-icon">🤖</div>
+                <h4>Deep Learning</h4>
+                <p>MobileNetV2 CNN architecture trained on thousands of potato leaf images</p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">🐍</div>
+                <h4>Flask Framework</h4>
+                <p>Lightweight Python web framework for fast deployment</p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">📱</div>
+                <h4>Responsive Design</h4>
+                <p>Works on any device - phone, tablet, or computer</p>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">🔐</div>
+                <h4>Data Privacy</h4>
+                <p>Your images are secure and not shared with third parties</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Diseases We Detect -->
+    <div class="diseases">
+        <h2>🦠 Diseases We Detect</h2>
+        <div class="disease-grid">
+            <div class="disease-card late-blight">
+                <h4>⚠️ Late Blight</h4>
+                <p>Phytophthora infestans - The most destructive potato disease. Causes dark lesions and white fungal growth.</p>
+                <span class="severity high">High Severity</span>
+            </div>
+            <div class="disease-card early-blight">
+                <h4>⚠️ Early Blight</h4>
+                <p>Alternaria solani - Causes dark concentric rings on leaves. Common in warm, humid conditions.</p>
+                <span class="severity medium">Medium Severity</span>
+            </div>
+            <div class="disease-card healthy">
+                <h4>✅ Healthy Plant</h4>
+                <p>Vigorous growth with no disease symptoms. Maintain good farming practices.</p>
+                <span class="severity low">No Treatment Needed</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Impact & Statistics -->
+    <div class="impact">
+        <h2>📈 Our Impact So Far</h2>
+        <div class="impact-stats">
+            <div class="impact-stat">
+                <div class="impact-number">95%+</div>
+                <div class="impact-label">Diagnostic Accuracy</div>
+            </div>
+            <div class="impact-stat">
+                <div class="impact-number">&lt;5s</div>
+                <div class="impact-label">Average Response Time</div>
+            </div>
+            <div class="impact-stat">
+                <div class="impact-number">24/7</div>
+                <div class="impact-label">Availability</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Developer / Team Section -->
+    <div class="developer">
+        <h2>👨‍💻 About the Developer</h2>
+        <div class="developer-card">
+            <div class="developer-avatar">👨‍🌾</div>
+            <div class="developer-info">
+                <h3>IRINATWE Nicholas  &  BYIRINGIRO Amos</h3>
+                <p class="developer-title">Agricultural Technology Developers</p>
+                <p>Passionate about combining agriculture with artificial intelligence to solve real-world problems facing smallholder farmers in Uganda. This project was developed as part of a initiative to make AI-powered agricultural tools accessible to all farmers.</p>
+                <div class="developer-links">
+                    <a href="#" class="dev-link">📧 irinatwenicholas@gmail.com</a>
+                    <a href="#" class="dev-link">🔗 LinkedIn</a>
+                    <a href="#" class="dev-link">📱 +256 761116332</a>
+                    <a href="#" class="dev-link">📱 +256 786677539</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Future Features -->
+    <div class="future">
+        <h2>🚀 Coming Soon</h2>
+        <div class="future-grid">
+            <div class="future-item">
+                <span>🌍</span>
+                <p>Multi-language support (Luganda, Runyankole, Swahili)</p>
+            </div>
+            <div class="future-item">
+                <span>📊</span>
+                <p>Crop yield prediction</p>
+            </div>
+            <div class="future-item">
+                <span>🤝</span>
+                <p>Farmer community forum</p>
+            </div>
+            <div class="future-item">
+                <span>📅</span>
+                <p>Seasonal disease forecasting</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Call to Action -->
+    <div class="cta-section">
+        <h2>Ready to Protect Your Crop?</h2>
+        <p>Start diagnosing your Irish potatoes today - it's free and easy!</p>
+        <div class="cta-buttons">
+            <a href="/dashboard" class="btn primary">Start Diagnosing</a>
+            <a href="/contact" class="btn secondary">Contact Support</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Hero Section */
+.about-hero {
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+}
+
+.about-hero h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.about-hero p {
+    font-size: 20px;
+    opacity: 0.95;
+}
+
+/* Mission & Vision */
+.mission-vision {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.mission-card, .vision-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.mission-card:hover, .vision-card:hover {
+    transform: translateY(-5px);
+}
+
+.mission-icon, .vision-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.mission-card h3, .vision-card h3 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+}
+
+/* Problem Section */
+.problem-section {
+    background: #fff3e0;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.problem-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 36px;
+    font-weight: bold;
+    color: #e65100;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+}
+
+.problem-desc {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 20px auto 0;
+}
+
+/* How It Works */
+.how-it-works {
+    margin-bottom: 50px;
+}
+
+.how-it-works h2, .technology h2, .diseases h2, .impact h2, .developer h2, .future h2 {
+    text-align: center;
+    color: #2e7d32;
+    margin-bottom: 30px;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.step {
+    background: white;
+    padding: 30px 20px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.step-number {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    background: #2e7d32;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.step-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.step h4 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+/* Technology Grid */
+.technology {
+    background: #f5f5f5;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.tech-item {
+    background: white;
+    padding: 25px;
+    text-align: center;
+    border-radius: 15px;
+}
+
+.tech-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.tech-item h4 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+/* Diseases Grid */
+.disease-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.disease-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.disease-card h4 {
+    margin-bottom: 10px;
+}
+
+.severity {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.high {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.medium {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.low {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+/* Impact Section */
+.impact {
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.impact h2 {
+    color: white;
+}
+
+.impact-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.impact-number {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.impact-label {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+/* Developer Section */
+.developer-card {
+    background: white;
+    display: flex;
+    gap: 30px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.developer-avatar {
+    font-size: 80px;
+    background: #e8f5e9;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.developer-info {
+    flex: 1;
+}
+
+.developer-info h3 {
+    color: #2e7d32;
+    margin-bottom: 5px;
+}
+
+.developer-title {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.developer-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.dev-link {
+    color: #2e7d32;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.dev-link:hover {
+    text-decoration: underline;
+}
+
+/* Future Features */
+.future {
+    margin-bottom: 50px;
+}
+
+.future-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.future-item {
+    background: #e8f5e9;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.future-item span {
+    font-size: 32px;
+}
+
+.future-item p {
+    margin: 0;
+    color: #333;
+}
+
+/* CTA Section */
+.cta-section {
+    text-align: center;
+    background: #2e7d32;
+    color: white;
+    padding: 50px;
+    border-radius: 20px;
+}
+
+.cta-section h2 {
+    color: white;
+    margin-bottom: 15px;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.cta-buttons .secondary {
+    background: white;
+    color: #2e7d32;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .mission-vision {
+        grid-template-columns: 1fr;
+    }
+    
+    .problem-stats {
+        flex-direction: column;
+    }
+    
+    .developer-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .developer-links {
+        justify-content: center;
+    }
+    
+    .about-hero h1 {
+        font-size: 32px;
+    }
+}
+</style>
+{% endblock %}

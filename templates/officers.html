@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="officers-container">
+    <h2>👨‍🌾 Connect with Agricultural Officers</h2>
+    <p>Get expert advice and support for your crops</p>
+    
+    <div class="officers-grid" id="officersGrid">
+        <!-- Officers will be loaded here -->
+        <div class="loading">Loading agricultural officers...</div>
+    </div>
+    
+    <!-- Contact Form for Direct Messages -->
+    <div class="contact-form-section">
+        <h3>📧 Send a Message to Agricultural Support</h3>
+        <form id="contactOfficerForm">
+            <select id="officerSelect" required>
+                <option value="">Select an officer...</option>
+            </select>
+            <input type="text" id="farmerName" placeholder="Your Name" required>
+            <input type="email" id="farmerEmail" placeholder="Your Email" required>
+            <input type="tel" id="farmerPhone" placeholder="Your Phone Number">
+            <textarea id="message" rows="4" placeholder="Describe your crop problem..." required></textarea>
+            <button type="submit" class="btn primary">Send Message</button>
+        </form>
+        <div id="formMessage" style="margin-top: 15px;"></div>
+    </div>
+</div>
+
+<style>
+.officers-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.officers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
+
+.officer-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.officer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.officer-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.officer-avatar {
+    width: 70px;
+    height: 70px;
+    background: #2e7d32;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+}
+
+.officer-info h3 {
+    color: #2e7d32;
+    margin-bottom: 5px;
+}
+
+.officer-info p {
+    color: #666;
+    font-size: 14px;
+}
+
+.officer-details {
+    margin: 15px 0;
+}
+
+.officer-details p {
+    margin: 8px 0;
+    color: #555;
+}
+
+.officer-details i {
+    margin-right: 10px;
+}
+
+.expertise {
+    background: #e8f5e9;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 10px 0;
+    font-size: 13px;
+    color: #2e7d32;
+}
+
+.contact-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.contact-buttons a {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.whatsapp-btn {
+    background: #25D366;
+    color: white;
+}
+
+.whatsapp-btn:hover {
+    background: #128C7E;
+}
+
+.call-btn {
+    background: #2e7d32;
+    color: white;
+}
+
+.call-btn:hover {
+    background: #1b5e20;
+}
+
+.contact-form-section {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 40px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.contact-form-section h3 {
+    color: #2e7d32;
+    margin-bottom: 20px;
+}
+
+#contactOfficerForm input,
+#contactOfficerForm select,
+#contactOfficerForm textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+.loading {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .officers-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+
+<script>
+let officers = [];
+
+window.onload = function() {
+    loadOfficers();
+};
+
+function loadOfficers() {
+    fetch('/get_officers')
+        .then(response => response.json())
+        .then(data => {
+            officers = data;
+            displayOfficers(data);
+            populateOfficerSelect(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('officersGrid').innerHTML = 
+                '<div class="loading">Error loading officers. Please try again.</div>';
+        });
+}
+
+function displayOfficers(officers) {
+    const officersHtml = officers.map(officer => `
+        <div class="officer-card">
+            <div class="officer-header">
+                <div class="officer-avatar">
+                    👨‍🌾
+                </div>
+                <div class="officer-info">
+                    <h3>${officer.name}</h3>
+                    <p>${officer.title}</p>
+                </div>
+            </div>
+            <div class="officer-details">
+                <p><i>📍</i> ${officer.district}</p>
+                <p><i>⏰</i> ${officer.available}</p>
+                <p><i>📧</i> ${officer.email}</p>
+                <div class="expertise">🎯 ${officer.expertise}</div>
+            </div>
+            <div class="contact-buttons">
+                <a href="https://wa.me/${officer.whatsapp.replace(/[^0-9]/g, '')}" 
+                   target="_blank" class="whatsapp-btn">
+                   💬 WhatsApp
+                </a>
+                <a href="tel:${officer.phone}" class="call-btn">
+                   📞 Call Now
+                </a>
+            </div>
+        </div>
+    `).join('');
+    
+    document.getElementById('officersGrid').innerHTML = officersHtml;
+}
+
+function populateOfficerSelect(officers) {
+    const select = document.getElementById('officerSelect');
+    select.innerHTML = '<option value="">Select an officer...</option>' + 
+        officers.map(officer => `<option value="${officer.id}">${officer.name} - ${officer.district}</option>`).join('');
+}
+
+document.getElementById('contactOfficerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const officerId = document.getElementById('officerSelect').value;
+    const farmerName = document.getElementById('farmerName').value;
+    const farmerEmail = document.getElementById('farmerEmail').value;
+    const farmerPhone = document.getElementById('farmerPhone').value;
+    const message = document.getElementById('message').value;
+    
+    if (!officerId) {
+        showMessage('Please select an officer', 'error');
+        return;
+    }
+    
+    // Send connection request
+    fetch(`/connect_officer/${officerId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: farmerName,
+            email: farmerEmail,
+            phone: farmerPhone,
+            message: message
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        showMessage(data.message, 'success');
+        document.getElementById('contactOfficerForm').reset();
+    })
+    .catch(error => {
+        showMessage('Error sending message. Please try again.', 'error');
+    });
+});
+
+function showMessage(msg, type) {
+    const msgDiv = document.getElementById('formMessage');
+    msgDiv.innerHTML = `<div style="padding: 10px; background: ${type === 'success' ? '#4caf50' : '#f44336'}; color: white; border-radius: 8px;">${msg}</div>`;
+    setTimeout(() => {
+        msgDiv.innerHTML = '';
+    }, 5000);
+}
+</script>
+
+{% endblock %}
