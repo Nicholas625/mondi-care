@@ -13,6 +13,22 @@ from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
 # Import database
 from database import db
+import os
+import gdown
+
+# ================= MODEL DOWNLOAD FROM GOOGLE DRIVE ================= #
+MODEL_PATH = "models/mondicare_final.keras"
+GOOGLE_DRIVE_FILE_ID = "1r-Z4N2zESBMTB0jEa34Pf1ZqsQYEDJEC"
+
+# Download model if not exists
+if not os.path.exists(MODEL_PATH):
+    print("📥 Downloading model from Google Drive...")
+    os.makedirs("models", exist_ok=True)
+    url = f"https://drive.google.com/uc?id={GOOGLE_DRIVE_FILE_ID}"
+    gdown.download(url, MODEL_PATH, quiet=False)
+    print("✅ Model downloaded successfully!")
+else:
+    print("✅ Model already exists locally")
 
 # ================= SET RANDOM SEEDS FOR CONSISTENCY ================= #
 # This ensures your model gives the same prediction every time for the same image
