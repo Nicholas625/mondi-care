@@ -1,5 +1,5 @@
-echo flask==2.3.3 > requirements.txt
-echo tensorflow-cpu==2.10.0 >> requirements.txt
-echo numpy==1.23.5 >> requirements.txt
-echo werkzeug==2.3.0 >> requirements.txt
-echo gunicorn==21.2.0 >> requirements.txt
+flask==2.3.3
+tensorflow-cpu==2.10.0
+numpy==1.23.5
+werkzeug==2.3.0
+gunicorn==21.2.0
