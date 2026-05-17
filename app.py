@@ -6,11 +6,10 @@ from werkzeug.utils import secure_filename
 from functools import wraps
 import random
 import tensorflow as tf
-
+from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
-# Import database
 from database import db
 
 app = Flask(__name__)
@@ -42,37 +41,27 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # ================= LOAD TRAINED MODEL ================= #
+print("Current working directory:", os.getcwd())
+print("Contents of current directory:", os.listdir("."))
+
 model = None
+model_path = "models/mondicare_final.keras"
 
-# Try SavedModel format first (most compatible)
-savedmodel_path = "models/mondicare_savedmodel"
-if os.path.exists(savedmodel_path):
+if os.path.exists(model_path):
+    print(f"Found model at {model_path}")
     try:
-        model = tf.saved_model.load(savedmodel_path)
-        print("✅ Model loaded successfully from SavedModel format!")
+        model = load_model(model_path, compile=False)
+        print("✅ Model loaded successfully!")
     except Exception as e:
-        print(f"❌ Could not load SavedModel: {e}")
-        model = None
-
-# Fall back to .keras format if SavedModel not found
-if model is None:
-    from tensorflow.keras.models import load_model
-    keras_paths = ["models/mondicare_final.keras", "models/new_mondicare.keras"]
-    for path in keras_paths:
-        if os.path.exists(path):
-            try:
-                model = load_model(path, compile=False)
-                print(f"✅ Model loaded successfully from {path}")
-                break
-            except Exception as e:
-                print(f"❌ Could not load from {path}: {e}")
-
-if model is None:
-    print("❌ ERROR: No model found! Please check your models folder.")
+        print(f"❌ Error loading model: {e}")
 else:
-    print("✅ Model is ready for predictions!")
+    print(f"❌ Model NOT found at {model_path}")
+    # Check if models folder exists
+    if os.path.exists("models"):
+        print("Contents of models folder:", os.listdir("models"))
+    else:
+        print("models folder does not exist!")
 
-# Class names
 class_names = ['Early_Blight', 'Healthy', 'Late_Blight']
 
 # ================= PESTICIDE RECOMMENDATIONS ================= #
@@ -197,11 +186,7 @@ def predict():
         img_array = np.expand_dims(img_array, axis=0)
         img_array = preprocess_input(img_array)
 
-        # Make prediction
         predictions = model.predict(img_array, verbose=0)
-        if hasattr(predictions, 'numpy'):
-            predictions = predictions.numpy()
-        
         class_index = np.argmax(predictions[0])
         result = class_names[class_index]
         confidence = float(predictions[0][class_index]) * 100
