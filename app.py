@@ -17,8 +17,7 @@ import os
 
 
 # ================= MODEL DOWNLOAD FROM GOOGLE DRIVE ================= #
-MODEL_PATH = "models/mondicare_final.keras"
-GOOGLE_DRIVE_FILE_ID = "1r-Z4N2zESBMTB0jEa34Pf1ZqsQYEDJEC"
+
 
 # Download model if not exist
 
