@@ -1,6 +1,6 @@
 flask
 tensorflow==2.20.0
-numpy
+numpy==1.24.3
 werkzeug
 gunicorn
 opencv-python==4.8.1.78
