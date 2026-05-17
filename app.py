@@ -79,20 +79,50 @@ def is_valid_leaf_image(image_path):
         return False, f"Error processing image: {str(e)}"
 
 # ================= LOAD TRAINED MODEL ================= #
-model = None
-model_path = "models/mondicare_model.keras"
+# ================= LOAD TRAINED MODEL ================= #
+import os
+import tensorflow as tf
 
-if os.path.exists(model_path):
-    print(f"Found model at {model_path}")
-    try:
-        model = load_model(model_path, compile=False)
-        print("✅ Model loaded successfully!")
-    except Exception as e:
-        print(f"Error loading model: {e}")
+print("="*50)
+print("DEBUGGING MODEL LOADING...")
+print(f"Current working directory: {os.getcwd()}")
+
+# List all files in the current directory and the models folder
+print(f"Files in current directory: {os.listdir('.')}")
+if os.path.exists("models"):
+    print(f"Files in 'models' folder: {os.listdir('models')}")
 else:
-    print(f"Model not found at {model_path}")
+    print("The 'models' folder does NOT exist!")
 
-class_names = ['Early_Blight', 'Healthy', 'Late_Blight']
+# Define the path to the model
+model_paths_to_try = [
+    "models/mondicare_model.keras",
+    "models/model.h5",
+    "mondicare_model.keras",
+    "model.h5"
+]
+
+model = None
+for path in model_paths_to_try:
+    if os.path.exists(path):
+        print(f"✅ Found model file at: {path}")
+        try:
+            model = tf.keras.models.load_model(path, compile=False)
+            print(f"✅ MODEL LOADED SUCCESSFULLY from {path}!")
+            break
+        except Exception as e:
+            print(f"❌ Error loading model from {path}: {e}")
+    else:
+        print(f"❌ Model file not found at: {path}")
+
+if model is None:
+    print("="*50)
+    print("❌ CRITICAL ERROR: Model could not be loaded.")
+    print("="*50)
+else:
+    print("="*50)
+    print("✅ MODEL IS READY FOR PREDICTIONS!")
+    print("="*50)
 
 # ================= PESTICIDE RECOMMENDATIONS ================= #
 PESTICIDE_RECOMMENDATIONS = {
