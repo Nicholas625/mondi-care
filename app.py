@@ -7,33 +7,23 @@ from functools import wraps
 import random
 import tensorflow as tf
 
-from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
 # Import database
 from database import db
-import os
-
-
-# ================= MODEL DOWNLOAD FROM GOOGLE DRIVE ================= #
-
-
-# Download model if not exist
-
-# ================= SET RANDOM SEEDS FOR CONSISTENCY ================= #
-# This ensures your model gives the same prediction every time for the same image
-random.seed(42)
-np.random.seed(42)
-tf.random.set_seed(42)
 
 app = Flask(__name__)
 app.secret_key = "mondicare_secret_key_2026"
 
+# ================= SET RANDOM SEEDS FOR CONSISTENCY ================= #
+random.seed(42)
+np.random.seed(42)
+tf.random.set_seed(42)
+
 # ================= LOGIN DECORATOR ================= #
 
 def login_required(f):
-    """Decorator to require login for premium features"""
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
@@ -48,29 +38,40 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
-# Allowed file extensions
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # ================= LOAD TRAINED MODEL ================= #
-# Try to load the new model first, then fall back to the old one
-model = None
-model_paths = ["models/mondicare_final.keras", "models/new_mondicare.keras"]
 
-for path in model_paths:
-    try:
-        model = load_model(path)
-        print(f"✅ Model loaded successfully from {path}")
-        break
-    except Exception as e:
-        print(f"❌ Could not load from {path}: {e}")
+model = None
+
+# Try SavedModel format first (most compatible)
+try:
+    model = tf.saved_model.load("models/mondicare_savedmodel")
+    print("✅ Model loaded successfully from SavedModel format!")
+except Exception as e:
+    print(f"❌ Could not load SavedModel: {e}")
+    
+    # Fall back to .keras format
+    from tensorflow.keras.models import load_model
+    model_paths = ["models/mondicare_final.keras", "models/new_mondicare.keras"]
+    
+    for path in model_paths:
+        try:
+            model = load_model(path, compile=False)
+            print(f"✅ Model loaded successfully from {path}")
+            break
+        except Exception as e2:
+            print(f"❌ Could not load from {path}: {e2}")
 
 if model is None:
     print("❌ ERROR: No model found! Please check your models folder.")
+else:
+    print("✅ Model is ready for predictions!")
 
-# Class names (must match training order)
+# Class names
 class_names = ['Early_Blight', 'Healthy', 'Late_Blight']
 
 # ================= PESTICIDE RECOMMENDATIONS ================= #
@@ -114,7 +115,6 @@ def login():
         user = db.get_user_by_username(username)
         
         if user:
-            # Simple password check (in production, use hashed passwords)
             if password:
                 session['user'] = user['username']
                 session['user_id'] = user['id']
@@ -124,7 +124,6 @@ def login():
             else:
                 return render_template("login.html", error="Invalid password")
         else:
-            # Auto-create user for demo (in production, require signup)
             user_id = db.create_user(username, f"{username}@example.com", password or "password")
             if user_id:
                 session['user'] = username
@@ -193,29 +192,30 @@ def predict():
     if not allowed_file(file.filename):
         return render_template("dashboard.html", prediction="Invalid file type. Please upload PNG, JPG, or JPEG.")
 
-    # Save image with timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = secure_filename(f"{timestamp}_{file.filename}")
     filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
     file.save(filepath)
 
     try:
-        # Load and preprocess image (MUST match training preprocessing)
         img = image.load_img(filepath, target_size=(224, 224))
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
-        img_array = preprocess_input(img_array)  # Critical: same as Colab training!
+        img_array = preprocess_input(img_array)
 
         # Make prediction
         predictions = model.predict(img_array, verbose=0)
+        
+        # Handle different prediction output formats
+        if hasattr(predictions, 'numpy'):
+            predictions = predictions.numpy()
+        
         class_index = np.argmax(predictions[0])
         result = class_names[class_index]
         confidence = float(predictions[0][class_index]) * 100
 
-        # Get recommendations
         recommendation = PESTICIDE_RECOMMENDATIONS.get(result, PESTICIDE_RECOMMENDATIONS["Healthy"])
         
-        # Save to database if user is logged in
         if 'user_id' in session:
             db.save_prediction(
                 session['user_id'],
@@ -247,7 +247,7 @@ def predict():
         print("ERROR:", e)
         return render_template("dashboard.html", prediction=f"Error: {str(e)}")
 
-# ================= PREMIUM FEATURES (Login Required) ================= #
+# ================= PREMIUM FEATURES ================= #
 
 @app.route("/shop_locator")
 @login_required
@@ -260,9 +260,7 @@ def shop_locator():
 @app.route("/get_shops")
 @login_required
 def get_shops():
-    """Return list of shops from database"""
     shops = db.get_all_shops()
-    
     shops_list = []
     for shop in shops:
         if shop['type'] == 'physical':
@@ -300,9 +298,7 @@ def officers_page():
 @app.route("/get_officers")
 @login_required
 def get_officers():
-    """Return list of agricultural officers from database"""
     officers = db.get_all_officers()
-    
     officers_list = []
     for officer in officers:
         officers_list.append({
@@ -345,13 +341,11 @@ def connect_officer(officer_id):
 @app.route("/history")
 @login_required
 def history():
-    """User prediction history from database"""
     predictions = db.get_user_predictions(session['user_id'])
     return render_template("history.html", predictions=predictions)
 
 # ================= RUN APPLICATION ================= #
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
