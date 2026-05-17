@@ -16,13 +16,12 @@ from database import db
 app = Flask(__name__)
 app.secret_key = "mondicare_secret_key_2026"
 
-# ================= SET RANDOM SEEDS FOR CONSISTENCY ================= #
+# ================= SET RANDOM SEEDS ================= #
 random.seed(42)
 np.random.seed(42)
 tf.random.set_seed(42)
 
 # ================= LOGIN DECORATOR ================= #
-
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -32,7 +31,6 @@ def login_required(f):
     return decorated_function
 
 # ================= CONFIGURATION ================= #
-
 UPLOAD_FOLDER = "static/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -44,27 +42,30 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # ================= LOAD TRAINED MODEL ================= #
-
 model = None
 
 # Try SavedModel format first (most compatible)
-try:
-    model = tf.saved_model.load("models/mondicare_savedmodel")
-    print("✅ Model loaded successfully from SavedModel format!")
-except Exception as e:
-    print(f"❌ Could not load SavedModel: {e}")
-    
-    # Fall back to .keras format
+savedmodel_path = "models/mondicare_savedmodel"
+if os.path.exists(savedmodel_path):
+    try:
+        model = tf.saved_model.load(savedmodel_path)
+        print("✅ Model loaded successfully from SavedModel format!")
+    except Exception as e:
+        print(f"❌ Could not load SavedModel: {e}")
+        model = None
+
+# Fall back to .keras format if SavedModel not found
+if model is None:
     from tensorflow.keras.models import load_model
-    model_paths = ["models/mondicare_final.keras", "models/new_mondicare.keras"]
-    
-    for path in model_paths:
-        try:
-            model = load_model(path, compile=False)
-            print(f"✅ Model loaded successfully from {path}")
-            break
-        except Exception as e2:
-            print(f"❌ Could not load from {path}: {e2}")
+    keras_paths = ["models/mondicare_final.keras", "models/new_mondicare.keras"]
+    for path in keras_paths:
+        if os.path.exists(path):
+            try:
+                model = load_model(path, compile=False)
+                print(f"✅ Model loaded successfully from {path}")
+                break
+            except Exception as e:
+                print(f"❌ Could not load from {path}: {e}")
 
 if model is None:
     print("❌ ERROR: No model found! Please check your models folder.")
@@ -75,7 +76,6 @@ else:
 class_names = ['Early_Blight', 'Healthy', 'Late_Blight']
 
 # ================= PESTICIDE RECOMMENDATIONS ================= #
-
 PESTICIDE_RECOMMENDATIONS = {
     "Early_Blight": {
         "chemicals": ["Mancozeb", "Chlorothalonil", "Azoxystrobin"],
@@ -98,7 +98,6 @@ PESTICIDE_RECOMMENDATIONS = {
 }
 
 # ================= ROUTES ================= #
-
 @app.route("/")
 def index():
     return render_template("welcome.html")
@@ -111,7 +110,6 @@ def login():
     if request.method == "POST":
         username = request.form.get('username')
         password = request.form.get('password')
-        
         user = db.get_user_by_username(username)
         
         if user:
@@ -131,7 +129,6 @@ def login():
                 return redirect(url_for("dashboard"))
             else:
                 return render_template("login.html", error="Login failed")
-    
     return render_template("login.html")
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -154,7 +151,6 @@ def signup():
                 return render_template("signup.html", error="Username already exists")
         else:
             return render_template("signup.html", error="Please enter a username")
-    
     return render_template("signup.html")
 
 @app.route("/logout")
@@ -175,7 +171,6 @@ def contact():
     return render_template("contact.html")
 
 # ================= PREDICTION ================= #
-
 @app.route("/predict", methods=["POST"])
 def predict():
     if model is None:
@@ -185,7 +180,6 @@ def predict():
         return redirect(url_for("dashboard"))
 
     file = request.files["image"]
-
     if file.filename == "":
         return redirect(url_for("dashboard"))
 
@@ -205,8 +199,6 @@ def predict():
 
         # Make prediction
         predictions = model.predict(img_array, verbose=0)
-        
-        # Handle different prediction output formats
         if hasattr(predictions, 'numpy'):
             predictions = predictions.numpy()
         
@@ -232,15 +224,13 @@ def predict():
                 'confidence': confidence
             }
 
-        is_logged_in = 'user_id' in session
-
         return render_template(
             "result.html",
             prediction=result,
             confidence=round(confidence, 2),
             recommendation=recommendation,
             image_path=filepath,
-            is_logged_in=is_logged_in
+            is_logged_in='user_id' in session
         )
 
     except Exception as e:
@@ -248,7 +238,6 @@ def predict():
         return render_template("dashboard.html", prediction=f"Error: {str(e)}")
 
 # ================= PREMIUM FEATURES ================= #
-
 @app.route("/shop_locator")
 @login_required
 def shop_locator():
@@ -285,7 +274,6 @@ def get_shops():
                 'products': shop['products'].split(', ') if shop['products'] else [],
                 'payment': shop['payment_info']
             })
-    
     response = make_response(jsonify(shops_list))
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     return response
@@ -317,7 +305,6 @@ def get_officers():
             'office_location': officer['office_location'],
             'years_experience': officer['years_experience']
         })
-    
     response = make_response(jsonify(officers_list))
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     return response
@@ -330,7 +317,6 @@ def connect_officer(officer_id):
         data = request.get_json()
         print(f"📧 Connection request from {data.get('name')} to {officer['name']}")
         print(f"📝 Message: {data.get('message')}")
-        
         return jsonify({
             "status": "success",
             "message": f"✓ Request sent to {officer['name']}! They will contact you within 24 hours.",
@@ -345,7 +331,6 @@ def history():
     return render_template("history.html", predictions=predictions)
 
 # ================= RUN APPLICATION ================= #
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
