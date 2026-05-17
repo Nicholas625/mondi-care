@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 from functools import wraps
 import random
 import tensorflow as tf
-from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
@@ -41,26 +40,34 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # ================= LOAD TRAINED MODEL ================= #
-print("Current working directory:", os.getcwd())
-print("Contents of current directory:", os.listdir("."))
-
 model = None
 model_path = "models/mondicare_final.keras"
 
 if os.path.exists(model_path):
     print(f"Found model at {model_path}")
     try:
-        model = load_model(model_path, compile=False)
+        # Load with custom objects to handle compatibility issues
+        model = tf.keras.models.load_model(
+            model_path, 
+            compile=False
+        )
         print("✅ Model loaded successfully!")
     except Exception as e:
-        print(f"❌ Error loading model: {e}")
+        print(f"Error loading model: {e}")
+        # Try loading with legacy format
+        try:
+            model = tf.keras.models.load_model(
+                model_path,
+                compile=False,
+                custom_objects={
+                    'BatchNormalization': tf.keras.layers.BatchNormalization
+                }
+            )
+            print("✅ Model loaded with custom objects!")
+        except Exception as e2:
+            print(f"Still failing: {e2}")
 else:
-    print(f"❌ Model NOT found at {model_path}")
-    # Check if models folder exists
-    if os.path.exists("models"):
-        print("Contents of models folder:", os.listdir("models"))
-    else:
-        print("models folder does not exist!")
+    print(f"Model not found at {model_path}")
 
 class_names = ['Early_Blight', 'Healthy', 'Late_Blight']
 
@@ -209,13 +216,15 @@ def predict():
                 'confidence': confidence
             }
 
+        is_logged_in = 'user_id' in session
+
         return render_template(
             "result.html",
             prediction=result,
             confidence=round(confidence, 2),
             recommendation=recommendation,
             image_path=filepath,
-            is_logged_in='user_id' in session
+            is_logged_in=is_logged_in
         )
 
     except Exception as e:
