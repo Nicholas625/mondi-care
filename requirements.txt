@@ -3,3 +3,4 @@ tensorflow==2.20.0
 numpy
 werkzeug
 gunicorn
+opencv-python==4.8.1.78

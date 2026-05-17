@@ -9,9 +9,9 @@ __pycache__/
 *.pyo
 
 # Large files (DO NOT UPLOAD)
-*.keras
+
 *.whl
-*.h5
+
 *.pb
 
 # Uploaded images

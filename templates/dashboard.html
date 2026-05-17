@@ -1,79 +1,168 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="container">
-
-    <div class="card">
-
-        <h1>CROP ANALYSIS</h1>
+<div class="dashboard-container">
+    <!-- LEFT SIDE -->
+    <div class="upload-section">
+        <h2>🌾 Crop Analysis</h2>
         <p>Upload a crop image and get instant AI diagnosis.</p>
 
-        <form action="/predict" method="POST" enctype="multipart/form-data">
-            <input type="file" name="image" required>
-            <br><br>
-            <button type="submit" class="btn-primary">Analyze Crop</button>
+        <!-- Upload Form -->
+        <form method="POST" action="/predict" enctype="multipart/form-data">
+            <input type="file" name="image" id="imageInput" accept="image/*" required>
+            <button type="submit" class="btn analyze-btn">🌱 Analyze Crop</button>
         </form>
-
-        {% if image_path %}
-            <img src="{{ image_path }}" class="preview-img">
-        {% endif %}
-
-        {% if prediction %}
-            <div class="result-section">
-                <h3>Diagnosis Result</h3>
-                <h2 class="disease">{{ prediction }}</h2>
-                <p class="confidence">Confidence: {{ confidence }}%</p>
-
-                <p class="recommendation">
-                    🧪 {{ recommendation }}
-                </p>
-
-                <!-- ACTION BUTTONS -->
-                <div class="action-buttons">
-                    <button onclick="showTreatment()">🧪 Treatment</button>
-                    <button onclick="showShops()">🛒 Buy</button>
-                    <button onclick="showContact()">💬 Help</button>
-                </div>
-
-                <!-- HIDDEN BOXES -->
-
-                <div id="treatmentBox" class="hidden-box">
-                    <h4>Treatment Details</h4>
-                    <p>{{ recommendation }}</p>
-                </div>
-
-                <div id="shopsBox" class="hidden-box">
-                    <h4>Find Agrovet Shops</h4>
-                    <a href="https://www.google.com/maps/search/agrovet+shops+near+me" target="_blank">
-                        Open Google Maps
-                    </a>
-                </div>
-
-                <div id="contactBox" class="hidden-box">
-                    <h4>Contact Expert</h4>
-                    <a href="tel:+256700000000">📞 Call Officer</a><br>
-                    <a href="https://wa.me/256700000000" target="_blank">💬 WhatsApp</a>
-                </div>
-
-            </div>
-        {% endif %}
-
     </div>
 
+    <!-- RIGHT SIDE -->
+    <div class="result-section">
+        <!-- Image Preview -->
+        <div class="preview">
+            <img id="previewImg" src="{{ image_path if image_path else '' }}" alt="Image preview">
+        </div>
+
+        <!-- Result -->
+        {% if prediction %}
+        <div class="result-card">
+            <h3>Diagnosis Result</h3>
+            <p class="prediction-text">{{ prediction }}</p>
+            {% if confidence %}
+            <p class="confidence-text">Confidence: {{ confidence | round(2) }}%</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
 </div>
 
-<!-- JAVASCRIPT -->
 <script>
-function showTreatment() {
-    document.getElementById("treatmentBox").style.display = "block";
-}
-function showShops() {
-    document.getElementById("shopsBox").style.display = "block";
-}
-function showContact() {
-    document.getElementById("contactBox").style.display = "block";
+// Image preview
+const input = document.getElementById("imageInput");
+const preview = document.getElementById("previewImg");
+
+if (input) {
+    input.addEventListener("change", function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
 }
 </script>
 
+<style>
+.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px;
+    gap: 40px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 70vh;
+}
+
+.upload-section {
+    flex: 1;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.upload-section h2 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.upload-section p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.result-section {
+    flex: 1;
+    text-align: center;
+}
+
+.preview {
+    background: #f5f5f5;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview img {
+    max-width: 100%;
+    max-height: 250px;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.result-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.prediction-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 15px 0;
+    color: #2e7d32;
+}
+
+.confidence-text {
+    color: #f57c00;
+    font-weight: bold;
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+}
+
+/* Green Analyze Button */
+.btn.analyze-btn {
+    background: #2e7d32;
+    color: white;
+    width: 100%;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.btn.analyze-btn:hover {
+    background: #1b5e20;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .upload-section, .result-section {
+        width: 100%;
+    }
+}
+</style>
 {% endblock %}

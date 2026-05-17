@@ -1,9 +1,22 @@
 /* ================= GLOBAL ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
-    margin: 0;
     background: #f5f7f6;
     color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
 }
 
 /* ================= NAVBAR ================= */
@@ -12,162 +25,535 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background: #2e7d32; /* green header */
+    background: #2e7d32;
     color: white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.logo {
+.logo a {
+    color: white;
+    text-decoration: none;
     font-weight: 700;
     font-size: 22px;
 }
 
-.navbar a {
-    margin-left: 25px;
+.navbar nav {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.navbar nav a {
+    padding: 8px 16px;
     color: white;
     text-decoration: none;
     font-weight: 500;
-    position: relative;
+    border-radius: 8px;
+    transition: all 0.3s;
 }
 
-.navbar a::after {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 2px;
-    background: #cddc39; /* yellow underline */
-    left: 0;
-    bottom: -5px;
-    transition: 0.3s;
+.navbar nav a:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
 }
 
-.navbar a:hover::after {
-    width: 100%;
+.logout-link {
+    background: rgba(255,255,255,0.15);
 }
 
-/* ================= HERO ================= */
-/* ================= HERO ================= */
+.logout-link:hover {
+    background: #d32f2f;
+}
+
+/* ================= HERO SECTION ================= */
 .hero {
-    height: 90vh;
+    position: relative;
+    min-height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: white;
-    padding: 20px;
-
-    /* Updated Overlay + Image */
-    background: 
-        linear-gradient(rgba(46,125,50,0.4), rgba(46,125,50,0.4)), /* semi-transparent green overlay */
-        url('/static/images/farm2.jpg'); /* farm image */
+    background: linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)), url('/static/images/farm2.jpg');
     background-size: cover;
     background-position: center;
-    background-blend-mode: overlay;
+    background-attachment: fixed;
 }
 
-/* HERO TEXT */
 .hero-content {
-    max-width: 700px;
-    animation: fadeIn 1.2s ease-out;
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 40px;
+    animation: fadeInUp 1s ease-out;
 }
 
-.hero-content h1 {
-    font-size: 50px;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+.hero-badge {
+    margin-bottom: 20px;
 }
 
-.hero-content h2 {
-    font-size: 30px;
+.badge-text {
+    display: inline-block;
+    padding: 8px 20px;
+    background: #2e7d32;
+    color: white;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.hero-title {
+    font-size: 64px;
+    font-weight: 800;
     margin-bottom: 15px;
-    text-shadow: 1px 1px 8px rgba(0,0,0,0.7);
 }
 
-.hero-content p {
+.gradient-text {
+    color: #2e7d32;
+}
+
+.hero-subtitle {
+    font-size: 32px;
+    color: #1a1a1a;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.hero-description {
     font-size: 18px;
-    margin-bottom: 25px;
-    opacity: 0.95;
-    text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
+    color: #333;
+    margin-bottom: 30px;
+    line-height: 1.6;
 }
 
-/* Hero animation */
-@keyframes fadeIn {
-    from {opacity: 0; transform: translateY(20px);}
-    to {opacity: 1; transform: translateY(0);}
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
 }
 
-/* Hero buttons */
-.hero-buttons .btn {
-    margin: 0 10px;
-}
-
-/* ================= CARDS ================= */
-.card {
-    width: 350px;
-    margin: auto;
-    margin-top: 80px;
-    padding: 30px;
-    border-radius: 15px;
-    background: white;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+.stat-item {
     text-align: center;
 }
 
-/* ================= INPUTS ================= */
-input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    outline: none;
+.stat-number {
+    display: block;
+    font-size: 32px;
+    font-weight: 800;
+    color: #2e7d32;
+}
+
+.stat-label {
     font-size: 14px;
+    color: #555;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 /* ================= BUTTONS ================= */
 .btn {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 10px;
+    padding: 14px 35px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
     cursor: pointer;
-    margin-top: 10px;
-    transition: 0.3s;
-    font-weight: 500;
+    border: none;
 }
 
-/* Green button */
-.primary {
+.btn-primary {
     background: #2e7d32;
     color: white;
+    box-shadow: 0 4px 15px rgba(46,125,50,0.3);
 }
 
-.primary:hover {
+.btn-primary:hover {
     background: #1b5e20;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46,125,50,0.4);
 }
 
-/* Yellow button */
-.secondary {
+.btn-outline {
+    background: transparent;
+    color: #2e7d32;
+    border: 2px solid #2e7d32;
+}
+
+.btn-outline:hover {
+    background: #2e7d32;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
     background: #fbc02d;
     color: black;
 }
 
-.secondary:hover {
+.btn-secondary:hover {
     background: #f9a825;
+    transform: translateY(-2px);
 }
 
-.btn:hover {
-    transform: scale(1.05);
+/* ================= CONTAINER ================= */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-/* ================= DASHBOARD ================= */
+/* ================= FEATURES SECTION ================= */
+.features-section {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-tag {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(46, 125, 50, 0.1);
+    color: #2e7d32;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    font-size: 18px;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(46,125,50,0.15);
+}
+
+.feature-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-size: 22px;
+    color: #2e7d32;
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.feature-link {
+    color: #2e7d32;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.feature-link:hover {
+    color: #1b5e20;
+}
+
+/* ================= HOW IT WORKS ================= */
+.how-it-works {
+    padding: 80px 0;
+    background: white;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.step {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border-radius: 20px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.step-number {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 50px;
+    height: 50px;
+    background: #2e7d32;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.step-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.step h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.step p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.step-arrow {
+    font-size: 32px;
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+/* ================= DISEASES SECTION ================= */
+.diseases-section {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.diseases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.disease-card {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.disease-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+}
+
+.late-blight::before {
+    background: #f44336;
+}
+
+.early-blight::before {
+    background: #ff9800;
+}
+
+.healthy::before {
+    background: #4caf50;
+}
+
+.disease-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.disease-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.disease-card h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.late-blight h3 { color: #f44336; }
+.early-blight h3 { color: #ff9800; }
+.healthy h3 { color: #4caf50; }
+
+.disease-desc {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.disease-stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.disease-stats .stat {
+    padding: 5px 12px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ================= CTA SECTION ================= */
+.cta-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    color: white;
+    text-align: center;
+}
+
+.cta-content h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.cta-content p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    opacity: 0.95;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cta-buttons .btn-primary {
+    background: white;
+    color: #2e7d32;
+}
+
+.cta-buttons .btn-primary:hover {
+    background: #f5f5f5;
+}
+
+.cta-buttons .btn-outline-light {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.cta-buttons .btn-outline-light:hover {
+    background: white;
+    color: #2e7d32;
+}
+
+/* ================= FOOTER - FULL WIDTH ================= */
+footer {
+    background: #1b5e20;
+    color: white;
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 20px;
+    flex-wrap: wrap;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-section h4 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.footer-section a {
+    display: block;
+    color: #ccc;
+    text-decoration: none;
+    margin: 8px 0;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    background: #154d18;
+    width: 100%;
+}
+
+/* ================= DASHBOARD PAGE ================= */
 .dashboard-container {
     display: flex;
     justify-content: space-between;
     padding: 50px;
     gap: 40px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 70vh;
 }
 
-/* LEFT PANEL */
 .upload-section {
     flex: 1;
     background: white;
@@ -177,99 +563,178 @@ input {
 }
 
 .upload-section h2 {
+    color: #2e7d32;
     margin-bottom: 10px;
 }
 
 .upload-section p {
+    color: #666;
     margin-bottom: 20px;
-    opacity: 0.8;
 }
 
-/* RIGHT PANEL */
 .result-section {
     flex: 1;
     text-align: center;
 }
 
-/* IMAGE PREVIEW */
-.preview img {
-    max-width: 100%;
-    max-height: 300px;
+.preview {
+    background: #f5f5f5;
     border-radius: 15px;
+    padding: 20px;
     margin-bottom: 20px;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* RESULT CARD */
+.preview img {
+    max-width: 100%;
+    max-height: 250px;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
 .result-card {
+    background: white;
     padding: 25px;
     border-radius: 15px;
-    background: white;
-    color: #333;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .prediction-text {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
-    margin-top: 10px;
-}
-
-/* Confidence */
-.confidence {
-    margin-top: 10px;
-    font-size: 16px;
+    margin: 15px 0;
     color: #2e7d32;
 }
 
-/* ================= FEATURES ================= */
-.features {
-    display: flex;
-    justify-content: space-around;
-    padding: 60px 40px;
+.confidence-text {
+    color: #f57c00;
+    font-weight: bold;
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     background: white;
-    text-align: center;
 }
 
-.feature-box {
-    width: 30%;
-    padding: 20px;
+/* ================= LOGIN/SIGNUP PAGES ================= */
+.login-container, .signup-container {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
 }
 
-.feature-box h3 {
-    margin-bottom: 10px;
+.login-card, .signup-card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-card h2, .signup-card h2 {
     color: #2e7d32;
-}
-
-.feature-box p {
-    color: #555;
-}
-
-/* ================= FOOTER ================= */
-footer {
     text-align: center;
-    padding: 15px;
-    background: #2e7d32;
-    color: white;
-    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.login-card input, .signup-card input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.error-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ================= RESPONSIVE ================= */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 15px;
+    }
+    
+    .navbar nav {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 15px;
+    }
+    
+    .navbar nav a {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 40px;
+    }
+    
+    .hero-subtitle {
+        font-size: 22px;
+    }
+    
+    .section-title {
+        font-size: 28px;
+    }
+    
     .dashboard-container {
         flex-direction: column;
+        padding: 20px;
     }
-
-    .card {
-        width: 90%;
+    
+    .features-grid, .diseases-grid {
+        grid-template-columns: 1fr;
     }
-
-    .features {
+    
+    .steps-container {
         flex-direction: column;
-        gap: 30px;
     }
-
-    .feature-box {
-        width: 80%;
-        margin: auto;
+    
+    .step-arrow {
+        transform: rotate(90deg);
+    }
+    
+    .hero-buttons, .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
     }
 }

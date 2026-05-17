@@ -12,18 +12,34 @@
             
             <div class="diagnosis-result">
                 <h3>Diagnosis:</h3>
+                
+                {% if not is_confident %}
+                <div class="warning-box">
+                    <strong>⚠️ Low Confidence Diagnosis</strong><br>
+                    The model is not confident about this prediction ({{ confidence }}%).<br>
+                    Please upload a clearer image of the potato leaf.
+                </div>
+                {% endif %}
+                
                 {% if prediction == "Healthy" %}
                     <p class="healthy-result">✅ {{ prediction }}</p>
+                {% elif prediction == "Uncertain - Please try again" %}
+                    <p class="uncertain-result">❓ {{ prediction }}</p>
                 {% else %}
                     <p class="disease-result">⚠️ {{ prediction.replace('_', ' ') }}</p>
                 {% endif %}
-                
-                <div class="confidence">
-                    <p>Confidence: <strong><span id="confidenceValue">{{ confidence|round(1) }}</span>%</strong></p>
-                    <div class="confidence-bar">
-                        <div class="confidence-fill" id="confidenceFill"></div>
-                    </div>
-                </div>
+                {% if prediction and prediction != "Error" and is_confident != false %}
+<div class="premium-actions">
+    <a href="/shop_locator" class="btn secondary">🏪 Find Shops</a>
+    <a href="/officers" class="btn secondary">👨‍🌾 Contact Expert</a>
+</div>
+{% endif %}
+             <div class="confidence">
+    <p>Confidence: <strong id="confidencePercent">{{ confidence }}%</strong></p>
+    <div class="confidence-bar">
+        <div class="confidence-fill" id="confidenceFill"></div>
+    </div>
+</div>
                 
                 <div class="recommendations">
                     <h4>🧪 Treatment Recommendations</h4>
@@ -43,17 +59,17 @@
                 
                 {% if is_logged_in %}
                     <div class="premium-actions">
-                        <a href="/shop_locator" class="btn secondary"> Find Shops</a>
-                        <a href="/officers" class="btn secondary"> Contact Expert</a>
+                        <a href="/shop_locator" class="btn secondary">🏪 Find Shops</a>
+                        <a href="/officers" class="btn secondary">👨‍🌾 Contact Expert</a>
                     </div>
                 {% else %}
                     <div class="upsell-box">
                         <h4>🔒 Unlock Premium Features</h4>
                         <p>Login to access:</p>
                         <ul>
-                            <li> Find nearby shops selling these chemicals</li>
-                            <li> Connect with agricultural officers for expert advice</li>
-                            <li> Save your diagnosis history</li>
+                            <li>📍 Find nearby shops selling these chemicals</li>
+                            <li>👨‍🌾 Connect with agricultural officers for expert advice</li>
+                            <li>📊 Save your diagnosis history</li>
                         </ul>
                         <div class="upsell-buttons">
                             <a href="/login" class="btn primary">Login</a>
@@ -123,6 +139,21 @@
     font-weight: bold;
 }
 
+.uncertain-result {
+    font-size: 28px;
+    color: #ff9800;
+    font-weight: bold;
+}
+
+.warning-box {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: #856404;
+}
+
 .confidence {
     margin: 20px 0;
 }
@@ -140,7 +171,6 @@
     height: 100%;
     background: #4caf50;
     border-radius: 5px;
-    width: 0%;
     transition: width 0.5s ease;
 }
 
@@ -235,12 +265,17 @@
 </style>
 
 <script>
-// Get confidence value from HTML element (NO Jinja2 in JavaScript)
-var confidenceSpan = document.getElementById('confidenceValue');
-var confidenceValue = confidenceSpan ? parseFloat(confidenceSpan.innerText) : 0;
-var fillBar = document.getElementById('confidenceFill');
-if (fillBar) {
-    fillBar.style.width = confidenceValue + '%';
-}
+// Set confidence bar width
+document.addEventListener('DOMContentLoaded', function() {
+    var confidenceText = document.getElementById('confidencePercent');
+    if (confidenceText) {
+        var confidenceValue = parseFloat(confidenceText.innerText);
+        var fillBar = document.getElementById('confidenceFill');
+        if (fillBar && !isNaN(confidenceValue)) {
+            fillBar.style.width = confidenceValue + '%';
+        }
+    }
+});
 </script>
+
 {% endblock %}
