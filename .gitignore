@@ -27,5 +27,5 @@ static/uploads/
 # OS files
 .DS_Store
 Thumbs.db
-models/*.keras
-models/*.h5
+# models/*.keras
+# models/*.h5
