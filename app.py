@@ -6,9 +6,13 @@ from werkzeug.utils import secure_filename
 from functools import wraps
 import random
 import tensorflow as tf
+import cv2
+
+from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
+# Import database
 from database import db
 
 app = Flask(__name__)
@@ -39,33 +43,52 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# ================= INPUT VALIDATION FUNCTION ================= #
+def is_valid_leaf_image(image_path):
+    """Check if the uploaded image is likely a potato leaf"""
+    try:
+        img = cv2.imread(image_path)
+        if img is None:
+            return False, "Could not read image file."
+        
+        # Convert to HSV color space
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+        
+        # Define green color range (for potato leaves)
+        lower_green = np.array([35, 40, 40])
+        upper_green = np.array([85, 255, 255])
+        
+        # Create mask for green color
+        green_mask = cv2.inRange(hsv, lower_green, upper_green)
+        green_percentage = np.sum(green_mask > 0) / (img.shape[0] * img.shape[1])
+        
+        # Check if enough green color (at least 5% of image should be green)
+        if green_percentage < 0.05:
+            return False, "The image does not appear to be a potato leaf. Please upload a clear photo of a potato leaf showing symptoms."
+        
+        # Check image is not too blurry
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()
+        
+        if laplacian_var < 50:
+            return False, "The image is blurry. Please take a clearer photo of the potato leaf."
+        
+        return True, "Valid leaf image"
+        
+    except Exception as e:
+        return False, f"Error processing image: {str(e)}"
+
 # ================= LOAD TRAINED MODEL ================= #
 model = None
-model_path = "models/mondicare_clean.keras"
+model_path = "models/mondicare_model.keras"
 
 if os.path.exists(model_path):
     print(f"Found model at {model_path}")
     try:
-        # Load with custom objects to handle compatibility issues
-        model = tf.keras.models.load_model(
-            model_path, 
-            compile=False
-        )
+        model = load_model(model_path, compile=False)
         print("✅ Model loaded successfully!")
     except Exception as e:
         print(f"Error loading model: {e}")
-        # Try loading with legacy format
-        try:
-            model = tf.keras.models.load_model(
-                model_path,
-                compile=False,
-                custom_objects={
-                    'BatchNormalization': tf.keras.layers.BatchNormalization
-                }
-            )
-            print("✅ Model loaded with custom objects!")
-        except Exception as e2:
-            print(f"Still failing: {e2}")
 else:
     print(f"Model not found at {model_path}")
 
@@ -187,6 +210,12 @@ def predict():
     filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
     file.save(filepath)
 
+    # Validate that the image is a potato leaf
+    is_valid, validation_message = is_valid_leaf_image(filepath)
+    if not is_valid:
+        os.remove(filepath)
+        return render_template("dashboard.html", prediction=validation_message)
+
     try:
         img = image.load_img(filepath, target_size=(224, 224))
         img_array = image.img_to_array(img)
@@ -197,8 +226,22 @@ def predict():
         class_index = np.argmax(predictions[0])
         result = class_names[class_index]
         confidence = float(predictions[0][class_index]) * 100
-
-        recommendation = PESTICIDE_RECOMMENDATIONS.get(result, PESTICIDE_RECOMMENDATIONS["Healthy"])
+        
+        # ================= CONFIDENCE THRESHOLD ================= #
+        MIN_CONFIDENCE = 70
+        
+        if confidence < MIN_CONFIDENCE:
+            result = "Uncertain - Please try again"
+            recommendation = {
+                "chemicals": ["Cannot determine"],
+                "application": "The model is not confident about this diagnosis.",
+                "organic": "Please upload a clearer image of the potato leaf.",
+                "safety": "Ensure good lighting and focus on the leaf."
+            }
+            is_confident = False
+        else:
+            recommendation = PESTICIDE_RECOMMENDATIONS.get(result, PESTICIDE_RECOMMENDATIONS["Healthy"])
+            is_confident = True
         
         if 'user_id' in session:
             db.save_prediction(
@@ -224,7 +267,8 @@ def predict():
             confidence=round(confidence, 2),
             recommendation=recommendation,
             image_path=filepath,
-            is_logged_in=is_logged_in
+            is_logged_in=is_logged_in,
+            is_confident=is_confident
         )
 
     except Exception as e:
