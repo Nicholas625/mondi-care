@@ -41,7 +41,7 @@ def allowed_file(filename):
 
 # ================= LOAD TRAINED MODEL ================= #
 model = None
-model_path = "models/mondicare_final.keras"
+model_path = "models/mondicare_model.h5"
 
 if os.path.exists(model_path):
     print(f"Found model at {model_path}")
